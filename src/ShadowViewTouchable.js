@@ -101,10 +101,12 @@ import { RNTShadowView } from './ShadowView';
      }
 
      _getBackgroundColor(backgroundColor) {
+      if (backgroundColor) {
         if (backgroundColor === 'transparent' || backgroundColor.replace(' ', '') === 'rgba(0,0,0,0)') {
           return 'rgba(0,0,0,0.001)'
         }
-
+      }
+      
         return backgroundColor !== undefined && typeof backgroundColor === 'string' ? backgroundColor : undefined;
      };
  

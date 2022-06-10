@@ -1,4 +1,3 @@
-// OVERRIDEN
 import React, { Component } from 'react';
 import { requireNativeComponent, Platform, View } from 'react-native';
 
@@ -10,8 +9,10 @@ class ShadowView extends Component {
     }
 
     _getBackgroundColor(backgroundColor) {
-        if (backgroundColor === 'transparent' || backgroundColor.replace(' ', '') === 'rgba(0,0,0,0)') {
-          return 'rgba(0,0,0,0.001)'
+        if (backgroundColor) {
+            if (backgroundColor === 'transparent' || backgroundColor.replace(' ', '') === 'rgba(0,0,0,0)') {
+              return 'rgba(0,0,0,0.001)'
+            }
         }
 
         return backgroundColor !== undefined && typeof backgroundColor === 'string' ? backgroundColor : undefined;
