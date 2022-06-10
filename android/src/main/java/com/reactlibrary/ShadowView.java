@@ -8,11 +8,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ShadowView extends ViewGroup {
+import com.facebook.react.views.view.ReactViewGroup;
+
+public class ShadowView extends ReactViewGroup {
     int shadowOffsetX = 0;
     int shadowOffsetY = (int)(-2 * Resources.getSystem().getDisplayMetrics().density);
     int shadowRadius = 0;
@@ -34,19 +38,13 @@ public class ShadowView extends ViewGroup {
         init();
     }
 
-    public ShadowView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public ShadowView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init();
-    }
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         if (changed) {
+            // Override to prevent crashing if size is 0
+            if (getWidth() == 0 || getHeight() == 0) {
+                return;
+            }
             shadowBitmap = createShadowForView();
             invalidate();
         }
@@ -73,7 +71,7 @@ public class ShadowView extends ViewGroup {
         invalidate();
     }
 
-    public void setBorderRadius(double borderRadius) {
+    public void setShadowBorderRadius(double borderRadius) {
         this.borderRadius=(int) (borderRadius * Resources.getSystem().getDisplayMetrics().density);
         invalidate();
     }
@@ -114,10 +112,11 @@ public class ShadowView extends ViewGroup {
         invalidate();
     }
 
-    public void setBorderWidth(double borderWidth) {
-        this.borderWidth = (borderWidth * Resources.getSystem().getDisplayMetrics().density * 1.1);
-        invalidate();
-    }
+//    public void setBorderWidth(double borderWidth) {
+////        this.borderWidth = (borderWidth * Resources.getSystem().getDisplayMetrics().density * 1.1);
+//        this.borderWidth = 3;
+//        invalidate();
+//    }
 
     private void createShadowColor() {
         int red = Color.red(shadowColor);
@@ -133,7 +132,8 @@ public class ShadowView extends ViewGroup {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (getWidth() == 0) {
+        // Override to prevent crashing if size is 0
+        if (getWidth() == 0 || getHeight() == 0) {
             return;
         }
 
@@ -152,6 +152,6 @@ public class ShadowView extends ViewGroup {
         shadowPaint.setAntiAlias(true);
         shadowPaint.setColor(shadowColorToDraw);
         canvas.drawRoundRect( new RectF(margin, margin, bitmap.getWidth() - margin, bitmap.getHeight() - margin), borderRadius, borderRadius, shadowPaint);
-        return BlurBuilder.blur(getContext(), bitmap, shadowRadius);
+        return com.como.RNTShadowView.BlurBuilder.blur(getContext(), bitmap, shadowRadius);
     }
 }

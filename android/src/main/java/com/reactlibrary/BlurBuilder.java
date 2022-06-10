@@ -3,14 +3,19 @@ package com.como.RNTShadowView;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.support.v8.renderscript.Allocation;
-import android.support.v8.renderscript.Element;
-import android.support.v8.renderscript.RenderScript;
-import android.support.v8.renderscript.ScriptIntrinsicBlur;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
+import android.util.Log;
 
 public class BlurBuilder {
 
     public static Bitmap blur(Context context, Bitmap image, float blurRadius) {
+        // Override
+        // blurRadius can't be 0 since Math.sqrt is failing
+        blurRadius = blurRadius == 0 ? 1 : blurRadius;
+        // End of Override
         float scale  = (1.3f / (float)Math.sqrt(blurRadius * Resources.getSystem().getDisplayMetrics().density)) ;
         blurRadius = blurRadius * 2;
         blurRadius  = Math.max(8, Math.min(25, blurRadius));

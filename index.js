@@ -1,3 +1,7 @@
-const ShadowView = require('./src/ShadowView');
+import ShadowView from './src/ShadowView';
+import ShadowViewTouchable from './src/ShadowViewTouchable';
 
-module.exports = ShadowView;
+export {
+    ShadowView,
+    ShadowViewTouchable
+};
